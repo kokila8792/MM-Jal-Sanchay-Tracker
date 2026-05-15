@@ -25,17 +25,21 @@ An Android application developed to monitor rainwater harvesting, track water co
 * Android Studio
   
 📂 Project Structure
-app/
- ├── ui/
- ├── screens/
- ├── firebase/
- ├── utils/
- ├── charts/
- ├── reports/
- └── notifications/
+com.kokila.jalsanchay
+
+ui/ → Jetpack Compose UI screens and components
+screens/ → Dashboard, History, Weather, Tips, Login, and Settings screens
+firebase/ → Firebase Authentication and Firestore integration
+charts/ → Analytics graph and chart handling
+reports/ → PDF report generation utilities
+notifications/ → Notification and smart alert management
+utils/ → Helper classes, constants, and common utilities
+theme/ → App themes, colors, and typography
+res/ → Drawables, icons, strings, and app resources
  
  ⚙️ Setup Instructions
- Clone Repository-git clone https://github.com/kokila8792/MM-Jal-Sanchay-Tracker.git
+ Clone Repository
+ git clone https://github.com/kokila8792/MM-Jal-Sanchay-Tracker.git
 
 Open in Android Studio
 1. Open Android Studio
