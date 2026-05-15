@@ -173,6 +173,22 @@ This application helps promote:
 
 ---
 
+
+## 📸 App Screenshots
+
+### Dashboard Screen
+<img width="351" height="805" alt="Screenshot 2026-05-15 224203" src="https://github.com/user-attachments/assets/6152e55e-49d4-4c57-80d3-c1a6996dbebe" />
+
+
+### Water Tank Animation
+(Add tank animation screenshot here)
+
+### Analytics Screen
+(Add analytics graph screenshot here)
+
+### Monthly Report
+(Add PDF report screenshot here)
+
 ## 👨‍💻 Author
 
 Developed by Kokila M
