@@ -181,13 +181,16 @@ This application helps promote:
 
 
 ### Water Tank Animation
-(Add tank animation screenshot here)
+<img width="355" height="792" alt="Screenshot 2026-05-15 224245" src="https://github.com/user-attachments/assets/6253ff4b-133d-4dc2-a4a9-ebbde8f1962f" />
+
 
 ### Analytics Screen
-(Add analytics graph screenshot here)
+<img width="372" height="821" alt="Screenshot 2026-05-15 224331" src="https://github.com/user-attachments/assets/e09293d5-a697-4e59-998a-6bc45b61a618" />
+
 
 ### Monthly Report
-(Add PDF report screenshot here)
+<img width="1080" height="2059" alt="WhatsApp Image 2026-05-15 at 10 54 50 PM" src="https://github.com/user-attachments/assets/e6fffbb3-b133-4471-83aa-823e5bc352bd" />
+
 
 ## 👨‍💻 Author
 
