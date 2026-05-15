@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "652737614651",
+    "project_id": "jal-sanchay-f0100",
+    "storage_bucket": "jal-sanchay-f0100.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:652737614651:android:b068f254860ce2ac1d5d1e",
+        "android_client_info": {
+          "package_name": "com.kokila.jalsanchay"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "652737614651-qp1c1dqi9lv25a6hi6avucm95bge1v2v.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kokila.jalsanchay",
+            "certificate_hash": "c1ffb2c4417be63dc538409a4706a26b9376ca9f"
+          }
+        },
+        {
+          "client_id": "652737614651-1lrrrdcqtttgouo4jvkfe1s2baghmpo8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDRUEfbrybzc3GcnaszCaRzhX4TngONfAo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "652737614651-1lrrrdcqtttgouo4jvkfe1s2baghmpo8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
