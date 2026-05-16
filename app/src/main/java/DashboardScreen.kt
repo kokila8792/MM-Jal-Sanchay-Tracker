@@ -192,7 +192,6 @@ fun DashboardScreen(
             else ->
                 "Low"
         }
-
     val filterStatus =
         when {
 
@@ -801,40 +800,42 @@ fun DashboardScreen(
                             .height(220.dp)
                     ) {
                         val fillHeight = size.height * (1f - animatedTank)
+                        if (animatedTank > 0f) {
 
-                        val waveHeight = 20f
+                            val waveHeight = 20f
 
-                        val path = Path()
+                            val path = Path()
 
-                        path.moveTo(0f,fillHeight )
+                            path.moveTo(0f, fillHeight)
 
-                        for (x in 0..size.width.toInt()) {
+                            for (x in 0..size.width.toInt()) {
 
-                            val y =
-                                waveHeight *
-                                        sin(
-                                            ((x + waveShift) * 0.02)
-                                        ).toFloat()
+                                val y =
+                                    waveHeight *
+                                            sin(
+                                                ((x + waveShift) * 0.02)
+                                            ).toFloat()
 
-                            path.lineTo(x.toFloat(), y + fillHeight)
+                                path.lineTo(x.toFloat(), y + fillHeight)
+                            }
+
+                            path.lineTo(
+                                size.width,
+                                size.height
+                            )
+
+                            path.lineTo(
+                                0f,
+                                size.height
+                            )
+
+                            path.close()
+
+                            drawPath(
+                                path = path,
+                                color = Color(0xFF2196F3)
+                            )
                         }
-
-                        path.lineTo(
-                            size.width,
-                            size.height
-                        )
-
-                        path.lineTo(
-                            0f,
-                            size.height
-                        )
-
-                        path.close()
-
-                        drawPath(
-                            path = path,
-                            color = Color(0xFF2196F3)
-                        )
                     }
 
                     Text(
@@ -851,7 +852,16 @@ fun DashboardScreen(
 
                 Text(
                     text =
-                        "Tank: ${(animatedTank * 100).toInt()}% Full",
+                        when {
+                            animatedTank <= 0f ->
+                                "Tank Empty"
+
+                            animatedTank >= 1f ->
+                                "Tank Full"
+
+                            else ->
+                                "Tank: ${(animatedTank * 100).toInt()}% Filled"
+                        },
 
                     style =
                         MaterialTheme.typography.headlineSmall
