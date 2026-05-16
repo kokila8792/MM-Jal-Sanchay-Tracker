@@ -39,6 +39,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
@@ -213,6 +214,7 @@ fun DashboardScreen(
     val co2Reduction =
         (todayWater / 1000f) * 2f
 
+
     LaunchedEffect(Unit) {
 
         FirebaseFirestore
@@ -274,8 +276,8 @@ fun DashboardScreen(
 
                     todayWater = value.documents
                         .filter { doc ->
-                            val ts = doc.getLong("timestamp") ?:  return@filter false
-                                    ts in startOfDay until endOfDay
+                            val ts = doc.getLong("timestamp") ?: return@filter false
+                            ts in startOfDay until endOfDay
                         }
                         .sumOf { doc ->
                             doc.getLong("savedWater")?.toInt() ?: 0
@@ -368,31 +370,48 @@ fun DashboardScreen(
                                 date = date
                             )
                         )
+
                     }
 
                     rainfallHistory = historyList
                 }
-                val currentUser = FirebaseAuth.getInstance().currentUser
 
-                userName =
-                    currentUser?.displayName
-                        ?: currentUser?.email?.substringBefore("@")
-                                ?: "User"
-
-                userEmail = currentUser?.email ?: "No Email"
             }
-
-
-
     }
-    val currentUser = FirebaseAuth.getInstance().currentUser
 
-    userName =
-        currentUser?.displayName
-            ?: currentUser?.email?.substringBefore("@")
-                    ?: "User"
+    val auth = FirebaseAuth.getInstance()
 
-    userEmail = currentUser?.email ?: "No Email"
+    DisposableEffect(Unit) {
+
+        val listener = FirebaseAuth.AuthStateListener { firebaseAuth ->
+
+            val user = firebaseAuth.currentUser
+            val emailFromGoogle =
+                user?.providerData
+                    ?.firstOrNull { it.providerId == "google.com" }
+                    ?.email
+
+            val email =
+                emailFromGoogle
+                    ?: user?.email
+                    ?: "No Email Available"
+
+            userEmail = email
+
+            userName =
+                user?.displayName
+                    ?: email.substringBefore("@")
+
+        }
+
+        auth.addAuthStateListener(listener)
+
+        onDispose {
+            auth.removeAuthStateListener(listener)
+        }
+    }
+
+
 
     Column(
         modifier = Modifier
@@ -462,6 +481,9 @@ fun DashboardScreen(
 
                 // PROFILE BUTTON
                 Box {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
 
                     Box(
                         modifier = Modifier
@@ -481,12 +503,20 @@ fun DashboardScreen(
 
                         Text(
                             text =
-                                userName.first().uppercase(),
+                                userName.firstOrNull()?.uppercase() ?: "U",
 
                             color = Color.White,
 
                             fontWeight =
                                 FontWeight.Bold
+                        )
+                    }
+
+                        // ✅ ADD THIS (EMAIL BELOW ICON)
+                        Text(
+                            text = userEmail,
+                            fontSize = 11.sp,
+                            color = Color.Gray
                         )
                     }
 
@@ -545,7 +575,9 @@ fun DashboardScreen(
                         )
                     }
                 }
+
             }
+
 
             Spacer(modifier = Modifier.height(20.dp))
 
