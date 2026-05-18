@@ -19,6 +19,7 @@ import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.WaterDrop
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
@@ -44,7 +45,6 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import androidx.compose.material3.CardDefaults
 
 @Composable
 fun WeatherScreen() {
@@ -141,6 +141,13 @@ fun WeatherScreen() {
                     }
 
                     forecastList = tempList
+                    val combinedForecast =
+                        tempList.joinToString(" ")
+
+                    WeatherState.rainChance =
+                        combinedForecast.contains("rain", true) ||
+                                combinedForecast.contains("thunderstorm", true) ||
+                                combinedForecast.contains("drizzle", true)
                 }
             }
 
@@ -183,14 +190,6 @@ fun WeatherScreen() {
                     weatherDesc =
                         data?.weather?.get(0)?.description
                             ?: "No Description"
-                    WeatherState.weatherCondition =
-                        weatherDesc
-
-                    WeatherState.rainChance =
-                        weatherDesc.contains(
-                            "rain",
-                            ignoreCase = true
-                        )
 
                     humidity =
                         "${data?.main?.humidity}%"
@@ -201,16 +200,57 @@ fun WeatherScreen() {
                     windSpeed =
                         "${data?.wind?.speed} km/h"
 
+                    val humidityInt =
+                        data?.main?.humidity ?: 0
+
+                    val pressureInt =
+                        data?.main?.pressure ?: 0
+
                     rainPrediction =
-                        if (
+                        when {
+
+                            weatherDesc.contains(
+                                "thunderstorm",
+                                true
+                            ) ->
+
+                                "⛈ Thunderstorm expected. Heavy rainfall likely."
+
                             weatherDesc.contains(
                                 "rain",
-                                ignoreCase = true
-                            )
-                        ) {
-                            "Heavy rain expected today ☔"
-                        } else {
-                            "No heavy rainfall expected"
+                                true
+                            ) ->
+
+                                "🌧 Rainfall currently detected in this area."
+
+                            weatherDesc.contains(
+                                "drizzle",
+                                true
+                            ) ->
+
+                                "🌦 Light rain/drizzle expected."
+
+                            weatherDesc.contains(
+                                "cloud",
+                                true
+                            ) && humidityInt > 75 ->
+
+                                "☁ High chance of rainfall due to dense clouds and humidity."
+
+                            humidityInt > 85 && pressureInt < 1005 ->
+
+                                "⚠ Weather conditions indicate possible upcoming rain."
+
+                            weatherDesc.contains(
+                                "clear",
+                                true
+                            ) ->
+
+                                "☀ Clear weather. No rainfall expected."
+
+                            else ->
+
+                                "🌤 Weather conditions are stable."
                         }
 
                 } else {
@@ -251,9 +291,19 @@ fun WeatherScreen() {
         when {
 
             weatherDesc.contains(
+                "thunderstorm",
+                true
+            ) -> Color(0xFFB0BEC5)
+
+            weatherDesc.contains(
                 "rain",
                 true
-            ) -> Color(0xFFBBDEFB)
+            ) -> Color(0xFFCFD8DC)
+
+            weatherDesc.contains(
+                "drizzle",
+                true
+            ) -> Color(0xFFD6EAF8)
 
             weatherDesc.contains(
                 "cloud",
@@ -272,9 +322,19 @@ fun WeatherScreen() {
         when {
 
             weatherDesc.contains(
+                "thunderstorm",
+                true
+            ) -> "⛈"
+
+            weatherDesc.contains(
                 "rain",
                 true
             ) -> "🌧"
+
+            weatherDesc.contains(
+                "drizzle",
+                true
+            ) -> "🌦"
 
             weatherDesc.contains(
                 "cloud",
@@ -292,7 +352,6 @@ fun WeatherScreen() {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(backgroundColor)
             .verticalScroll(
                 rememberScrollState()
             )
@@ -648,10 +707,10 @@ fun WeatherScreen() {
                             "🌧 Heavy rainfall expected tomorrow. Prepare storage tanks."
                         }
 
-                        weatherDesc.contains(
-                            "rain",
-                            true
-                        ) ->
+                        weatherDesc.contains("rain", true) ||
+                                weatherDesc.contains("drizzle", true) ||
+                                weatherDesc.contains("thunderstorm", true) ||
+                                weatherDesc.contains("cloud", true) ->
 
                             "☔ Rain expected soon. Prepare storage tanks and harvesting systems."
 
@@ -662,13 +721,13 @@ fun WeatherScreen() {
 
                             "🌥 Cloudy weather detected. Monitor possible rainfall conditions."
 
-                        temperature.replace("°C", "")
-                            .toIntOrNull() ?: 0 > 35 ->
+                        (temperature.replace("°C", "")
+                            .toIntOrNull() ?: 0 )> 35 ->
 
                             "🔥 High temperature detected. Conserve stored water carefully."
 
-                        humidity.replace("%", "")
-                            .toIntOrNull() ?: 0 > 80 ->
+                        (humidity.replace("%", "")
+                            .toIntOrNull() ?: 0) > 80 ->
 
                             "💧 High humidity may indicate upcoming rainfall."
 
